@@ -12,7 +12,7 @@ Implement Image Steganography using Deep Learning Architectures
 3. Dataset directory structure should look like this (required by ImageFolder from torchvision):
 
 ```
-   +- `dataset_directory`
+   +- dataset
        +- celeba
           +- img_align_celeba
               +- 000001.jpg

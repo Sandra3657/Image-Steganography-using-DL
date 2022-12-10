@@ -1,6 +1,7 @@
 from torchvision import transforms
 import torch
 import torchvision
+import numpy as np
 
 def get_celeba(batch_size, dataset_directory, split=0.2):
     # 1. Download this file into dataset_directory and unzip it:
@@ -20,11 +21,16 @@ def get_celeba(batch_size, dataset_directory, split=0.2):
         transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5)),
     ])
     dataset = torchvision.datasets.ImageFolder(dataset_directory + 'celeba', train_transformation)
+    dataset = torch.utils.data.Subset(dataset, np.random.choice(len(dataset), 50000, replace=False))
+    
     n = len(dataset)
+    print("No. of images: ",n)
     test_split = split/2.0
 
     n_test = int(n*test_split)
     n_train = int((n-2*n_test)/2)
+    print("No. of training imgs:", 2*n_train)
+    print("No. of testing imgs:", 2*n_test)
 
     source_train, payload_train, source_test, payload_test = torch.utils.data.random_split(
     dataset, (n_train, n_train, n_test, n_test))

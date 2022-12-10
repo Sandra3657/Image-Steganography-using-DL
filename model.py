@@ -34,22 +34,17 @@ class Encoder(nn.Module):
     self.conv7 = nn.Conv2d(16,8, kernel_size=3, padding="same")
     self.conv8 = nn.Conv2d(8,3, kernel_size=3, padding="same")
 
-  def forward(self,x):
-    s, p = x
-    print(1, s.shape)
+  def forward(self,s,p):
     s = F.relu(self.cover_conv1(s))
     s = F.relu(self.cover_conv2(s))
     s = F.relu(self.cover_conv3(s))
-    print(1, s.shape)
-    print("-----")
-    print(1,p.shape)
+
     p = F.relu(self.secret_conv1(p))
     p = F.relu(self.secret_conv2(p))
     p = F.relu(self.secret_conv3(p))
-    print(1,p.shape)
-    print("----")
+
     m = torch.cat((s, p), 1)
-    print(1,m.shape)
+
     m = F.relu(self.conv1(m))
     m = F.relu(self.conv2(m))
     m = F.relu(self.conv3(m))
@@ -58,7 +53,7 @@ class Encoder(nn.Module):
     m = F.relu(self.conv6(m))
     m = F.relu(self.conv7(m))
     m = F.relu(self.conv8(m))
-    print(1,m.shape)
+
     return m
 
 class Decoder(nn.Module):
@@ -72,10 +67,23 @@ class Decoder(nn.Module):
     self.conv6 = nn.Conv2d(128,128, kernel_size=3, padding="same")
     self.conv7 = nn.Conv2d(128,64, kernel_size=3, padding="same")
     self.conv8 = nn.Conv2d(64,32, kernel_size=3, padding="same")
-    self.conv8 = nn.Conv2d(64,32, kernel_size=3, padding="same")
-    self.conv8 = nn.Conv2d(64,32, kernel_size=3, padding="same")
-    self.conv8 = nn.Conv2d(64,32, kernel_size=3, padding="same")
-
+    self.conv9 = nn.Conv2d(32,16, kernel_size=3, padding="same")
+    self.conv10 = nn.Conv2d(16,8, kernel_size=3, padding="same")
+    self.conv11 = nn.Conv2d(8,3, kernel_size=3, padding="same")
+  
+  def forward(self, x):
+    o = F.relu(self.conv1(x))
+    o = F.relu(self.conv2(o))
+    o = F.relu(self.conv3(o))
+    o = F.relu(self.conv4(o))
+    o = F.relu(self.conv5(o))
+    o = F.relu(self.conv6(o))
+    o = F.relu(self.conv7(o))
+    o = F.relu(self.conv8(o))
+    o = F.relu(self.conv9(o))
+    o = F.relu(self.conv10(o))
+    o = F.relu(self.conv11(o))
+    return o
 
   
 # print(summary(Encoder(),  input_size=(1,3,256,256), device='cpu'))
